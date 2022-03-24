@@ -16,6 +16,7 @@ This tutorial will help guide users through uploading and minting a video as an 
   - [Step 2: Setting up Livepeer CLI](step-2-setting-up-livepeer-cli)
   - [Step 3: Run the video-nft command](#step-3-run-the-video-nft-command)
   - [Step 4: Mint your Video NFT](#step-4-mint-your-video-nft)
+  - [Building a dApp]()
 </details>
 
 ### 📹 What is Livepeer? 📹
@@ -25,12 +26,15 @@ This tutorial will help guide users through uploading and minting a video as an 
 
 ### What you need to get started:
 * 💚 [Node. js](https://nodejs.org/en/) installed on your computer 💻
+`node >=10.0.0` or `yarn >=1.0.0`
+* [Yarn] 
 * 📹 Have a `.mp4` video file to mint 🌿
 * 🦊 [Metamask](https://metamask.io/download/) wallet 👛
 * Have `Polygon/Mumbai Testnet` AND `MATIC` in your Metamask.
 
+
 --- 
-## ⬆️ Upload Your Video ⬆️
+## ⬆️ Upload Your Video SDK ⬆️
 ### Step 1. Get API Key 🔑 
 Get an `API key` from Livepeer [here](https://livepeer.com/dashboard/developers/api-keys)
 
@@ -165,6 +169,19 @@ Example:
 https://ipfs.io/ipfs/QmYwabdPZDpcdQf2indzCSWhko8fPvKRAWXoFm5Ka1JB31
 
 ![](./images/20.png)
+
+
+### Building an dApp using the SDK 
+
+Lets build a video uploader that uses the sdk that you can later mint to polygon
+
+
+
+
+
+### Resources:
+
+
 
 
 
