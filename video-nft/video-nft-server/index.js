@@ -7,7 +7,6 @@ require('dotenv').config()
 const api = new VodApi(process.env.LIVEPEER_API_KEY);
 const cors = require('cors')
 
-
 const app = express();
 app.use(cors())
 const storage = multer.diskStorage({

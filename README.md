@@ -16,7 +16,7 @@ This tutorial will help guide users through uploading and minting a video as an 
   - [Step 2: Setting up Livepeer CLI](step-2-setting-up-livepeer-cli)
   - [Step 3: Run the video-nft command](#step-3-run-the-video-nft-command)
   - [Step 4: Mint your Video NFT](#step-4-mint-your-video-nft)
-  - [Building a dApp]()
+  - [Building a dApp](#building-a-dapp)
 </details>
 
 ### 📹 What is Livepeer? 📹
@@ -171,15 +171,55 @@ https://ipfs.io/ipfs/QmYwabdPZDpcdQf2indzCSWhko8fPvKRAWXoFm5Ka1JB31
 ![](./images/20.png)
 
 
-### Building an dApp using the SDK 
+# Building a dApp using the SDK 
 
-Lets build a video uploader that uses the sdk that you can later mint to polygon
+Lets build a video uploader that uses the sdk that you can later mint to polygon 
+
+### Step 1. Setup Video NFT Backend Server
+Create a folder  called `video-nft-server` 
+```bash
+mkdir video-nft-server
+```
+
+Next run these commands: 
+
+#### npm
+```bash
+cd video-nft-server 
+npm init 
+```
+
+#### yarn 
+```bash
+cd video-nft-server
+yarn init
+```
+
+
+* Install the following npm packages to your package.json
+
+#### npm
+```bash
+npm install --save @livepeer/video-nft cors dotenv express multer
+```
+
+#### yarn
+```bash
+yarn add @livepeer/video-nft cors dotenv express multer
+````
+
+
+
+### Step 2. Setup Video NFT SDK Frontend 
+
 
 
 
 
 
 ### Resources:
+
+
 
 
 
