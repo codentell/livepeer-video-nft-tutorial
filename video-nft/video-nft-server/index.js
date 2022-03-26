@@ -1,14 +1,17 @@
+//import dotenv from 'dotenv';
 const express = require('express');
 const multer = require('multer');
-const { default: VodApi } = require("@livepeer/video-nft/lib/api");
-const { getDesiredProfile } = require('@livepeer/video-nft/lib/transcode');
+const cors = require('cors');
+const fs = require("fs");
+const { VideoNFT } = require("@livepeer/video-nft/dist/index.cjs.js")
 require('dotenv').config()
+const PORT = 3001;
 
-const api = new VodApi(process.env.LIVEPEER_API_KEY);
-const cors = require('cors')
+const sdk = new VideoNFT({
+    auth: { apiKey: process.env.LIVEPEER_API_KEY },
+    endpoint: "https://livepeer.com"
+});
 
-const app = express();
-app.use(cors())
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         cb(null, 'uploads')
@@ -18,43 +21,64 @@ const storage = multer.diskStorage({
         cb(null, originalname);
     }
 })
+
+const app = express();
+app.use(cors())
+
 const upload = multer({ storage });
 
+function printProgress(progress) {
+    console.log(` - progress: ${100 * progress}%`);
+}
+
+async function maybeTranscode(sdk, asset) {
+    const { possible, desiredProfile } = sdk.checkNftNormalize(asset);
+    if (!possible || !desiredProfile) {
+        if (!possible) {
+            console.error(
+                `Warning: Asset is larger than OpenSea file limit and can't be transcoded down since it's too large. ` +
+                `It will still be stored in IPFS and referenced in the NFT metadata, so a proper application is still able to play it back. ` +
+                `For more information check http://bit.ly/opensea-file-limit`
+            );
+        }
+        return asset;
+    }
+
+    console.log(
+        `File is too big for OpenSea 100MB limit (learn more at http://bit.ly/opensea-file-limit).`
+    );
+
+    console.log(
+        `Transcoding asset to ${desiredProfile.name} at ${Math.round(
+            desiredProfile.bitrate / 1024
+        )} kbps bitrate`
+    );
+    return await sdk.nftNormalize(asset, printProgress);
+}
 
 app.post('/upload', upload.array('fileName'), async (req, res) => {
     console.log("Testing");
     console.log(req.files);
-    console.log('1. Requesting upload URL... ');
-    const {
-        url: uploadUrl,
-        asset: { id: assetId },
-        task: importTask
-    } = await api.requestUploadUrl(req.files[0].path);
+    const sdk = new VideoNFT({
+        auth: { apiKey: process.env.LIVEPEER_API_KEY },
+        endpoint: "https://livepeer.com"
+    });
 
-    console.log(`Pending asset with id=${assetId}`);
-
-    console.log(uploadUrl);
-
-    console.log('2. Uploading file...');
-    await api.uploadFile(uploadUrl, String(req.files[0].path));
-    await api.waitTask(importTask);
-
-
-    let asset = await api.getAsset(assetId ?? '');
-    const desiredProfile = await getDesiredProfile(asset);
-    if (desiredProfile) {
-        console.log(
-            `3. Transcoding asset to ${desiredProfile.name} at ${Math.round(
-                desiredProfile.bitrate / 1024
-            )} kbps bitrate`
-        );
-        const transcode = await api.transcodeAsset(asset, desiredProfile);
-        await api.waitTask(transcode.task);
-        asset = transcode.asset;
+    let file = null;
+    let asset;
+    try {
+        file = fs.createReadStream(req.files[0].path);
+        console.log(file);
+        console.log('Uploading file...');
+        asset = await sdk.createAsset(req.files[0].path, file, printProgress);
+    } finally {
+        file?.close();
     }
 
-    console.log('3. Starting export... ');
-    let { task: exportTask } = await api.exportAsset(
+    asset = await maybeTranscode(sdk, asset);
+
+    console.log('Starting export...');
+    let ipfs = await sdk.exportToIPFS(
         asset.id ?? '',
         JSON.parse(JSON.stringify({
             name: req.files[0].filename,
@@ -63,22 +87,20 @@ app.post('/upload', upload.array('fileName'), async (req, res) => {
             )}`,
             image: `ipfs://bafkreidmlgpjoxgvefhid2xjyqjnpmjjmq47yyrcm6ifvoovclty7sm4wm`,
             properties: {}
-        }))
+        })),
+        printProgress
     );
-    console.log(`Created export task with id=${exportTask.id}`);
-    exportTask = await api.waitTask(exportTask);
-
-    const result = exportTask.output?.export?.ipfs;
     console.log(
-        `4. Export successful! Result: \n${JSON.stringify(result, null, 2)}`
+        `Export successful! Result: \n${JSON.stringify(ipfs, null, 2)}`
     );
 
     console.log(
-        `5. Mint your NFT at:\n` +
-        `https://livepeer.com/mint-nft?tokenUri=${result?.nftMetadataUrl}`
+        `Mint your NFT at:\n` +
+        `https://livepeer.com/mint-nft?tokenUri=${ipfs?.nftMetadataUrl}`
     );
+    return res.send({ status: 'OK', data:  ipfs?.nftMetadataUrl});
+})
 
-    return res.send({ status: 'OK', tokenUri: `${result?.nftMetadataUrl}` });
+app.listen(PORT, () => {
+    console.log(`gm! localhost:${PORT}`)
 });
-
-app.listen(3001);

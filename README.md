@@ -170,7 +170,7 @@ https://ipfs.io/ipfs/QmYwabdPZDpcdQf2indzCSWhko8fPvKRAWXoFm5Ka1JB31
 
 ![](./images/20.png)
 
-
+<!-- 
 # Building a dApp using the SDK 
 
 Lets build a video uploader that uses the sdk that you can later mint to polygon 
@@ -217,7 +217,7 @@ yarn add @livepeer/video-nft cors dotenv express multer
 
 
 
-### Resources:
+### Resources: -->
 
 
 
