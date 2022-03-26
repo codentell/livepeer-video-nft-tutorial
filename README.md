@@ -1,19 +1,19 @@
-# Livepeer Video NFT Tutorial
+# Livepeer Video Services NFT Tutorial
 ---
 
-This tutorial will help guide users through uploading and minting a video as an `NFT` using [Livepeer](https://livepeer.com/). 
+This tutorial will help guide users through uploading and minting a video as an `NFT` using [Livepeer Video Services](https://livepeer.com/). 
 
 
 ## Table of Contents
 <details>
 <summary>Click to expand</summary>
 
-- **Livepeer**
+- **Livepeer Video Services**
   - [Table of Contents](#table-of-contents)
-  - [What is Livepeer?](#what-is-livepeer)
+  - [What is Livepeer Video Service?](#what-is-livepeer)
   - [What you need to get started](#what-you-need-to-get-started)
   - [Step 1: Get API Key](#step-1-get-api-key)
-  - [Step 2: Setting up Livepeer CLI](step-2-setting-up-livepeer-cli)
+  - [Step 2: Setting up Livepeer Video Services CLI](step-2-setting-up-livepeer-cli)
   - [Step 3: Run the video-nft command](#step-3-run-the-video-nft-command)
   - [Step 4: Mint your Video NFT](#step-4-mint-your-video-nft)
   - [Building a dApp](#building-a-dapp)
@@ -22,7 +22,7 @@ This tutorial will help guide users through uploading and minting a video as an 
 ### 📹 What is Livepeer? 📹
 `Livepeer` is a decentralized video transcoding platform.
 
-`Livepeer` makes adding video streaming features into your web3 apps easy. It can handle live streams or video files.
+`Livepeer Video Services` makes adding video streaming features into your web3 apps easy. It can handle live streams or video files.
 
 ### What you need to get started:
 * 💚 [Node. js](https://nodejs.org/en/) installed on your computer 💻
@@ -53,7 +53,7 @@ The page should look like this when you create the  `API key`:
 ![Step 1.4. API Key](./images/3.png)
 
 ---
-### Step 2: Setting up Livepeer CLI
+### Step 2: Setting up Livepeer Video Services CLI
 Navigate to a folder 📁 where your video file 🎥  is located 
 
 * Example: `livepeer.mp4`
