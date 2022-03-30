@@ -4,12 +4,7 @@
   "license": "MIT",
   "main": "dist/index.js",
   "scripts": {
-		"prepare": "yarn clean && yarn format && yarn build",
-		"build": "rollup -c",
-		"dev": "rollup -c -w",
-		"start": "yarn build && ./bin/video-nft",
-		"format": "prettier --write \"./**/*.{ts,js,json}\"",
-		"clean": "rm -rf ./dist"
+    "start": "node index.js"
   },
   "dependencies": {
     "@livepeer/video-nft": "^0.2.0",
