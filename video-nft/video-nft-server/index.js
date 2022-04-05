@@ -98,7 +98,7 @@ app.post('/upload', upload.array('fileName'), async (req, res) => {
         `Mint your NFT at:\n` +
         `https://livepeer.com/mint-nft?tokenUri=${ipfs?.nftMetadataUrl}`
     );
-    return res.send({ status: 'OK', data:  ipfs?.nftMetadataUrl});
+    return res.send({ status: 'OK', data:  ipfs?.nftMetadataUrl, ...ipfs });
 })
 
 app.listen(PORT, () => {
